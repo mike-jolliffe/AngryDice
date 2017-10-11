@@ -14,18 +14,23 @@ function Die(value) {
 
 var die1 = new Die($('#die1').children().attr('src'));
 var die2 = new Die($('#die2').children().attr('src'));
-// Create a function for displaying/changing the value of the die object
-$('#roll').click(function () {
-    die1.roll();
-    $('#die1 ').children().attr('src', die1.value);
 
-    die2.roll();
-    $('#die2').children().attr('src', die2.value)
+// Display/change the value of the die object
+$('#roll').click(function () {
+    if (!($('#hold1').hasClass('held'))) {
+        die1.roll();
+        $('#die1 ').children().attr('src', die1.value);
+    }
+    if (!($('#hold2').hasClass('held'))) {
+        die2.roll();
+        $('#die2').children().attr('src', die2.value);
+    }
 });
 
-$('.content').find('button').click(function () {
+// Click toggles die status to Hold/Held
+$('.content').first().find('button').click(function () {
     $(this).toggleClass('held');
-    if($(this).hasClass('held')) {
+    if ($(this).hasClass('held')) {
         $(this).html("HELD");
     } else {
         $(this).html("HOLD")
