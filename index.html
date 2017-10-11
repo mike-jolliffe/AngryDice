@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Angry Dice</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="box">
+        <div>
+            <h1>Angry Dice</h1>
+            <p>Angry Dice is a real-time dice rolling microgame. </p>
+            <p>The object is to be the first to six by rolling your dice in ascending order pairs. Players each have two
+                dice they can roll and they can hold a die
+                (except a 6), if it rolls to something they will need.</p>
+        </div>
+        <div id="instructionsList">
+            <ul>
+                <li>Round 1 - Die 1 and Die 2</li>
+                <li>Round 2 - Die 3 and Die 4</li>
+                <li>Round 1 - Die 5 and Die 6</li>
+                <li>If you get two Angry Dice you must start at round 1 again.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div id="one">
+            <div id="die1">
+                <img src="img/angry.png" alt="die 1">
+            </div>
+            <button class="btn btn--stripe btn--radius held" id="hold1">Held</button>
+        </div>
+
+
+        <div id="two">
+            <div id="die2">
+                <img src="img/angry.png" alt="die 1">
+            </div>
+            <button class="btn btn--stripe btn--radius" id="hold2">Hold</button>
+        </div>
+
+    </div>
+    <div class="content spacer">
+        <button class="btn btn--stripe" id="roll">Roll</button>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
