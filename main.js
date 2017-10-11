@@ -23,6 +23,15 @@ $('#roll').click(function () {
     $('#die2').children().attr('src', die2.value)
 });
 
+$('.content').find('button').click(function () {
+    $(this).toggleClass('held');
+    if($(this).hasClass('held')) {
+        $(this).html("HELD");
+    } else {
+        $(this).html("HOLD")
+    }
+});
+
 // Change the non-held die to match the random number generator
 // Create a function to hold/release dice
 // Create a way to keep track of the round number, and track successes
