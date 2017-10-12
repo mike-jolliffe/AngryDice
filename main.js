@@ -9,6 +9,7 @@ var checkAgainst = {
 function Game() {
     this.round = 1;
     this.success = false;
+    this.counter = 0
 }
 
 // Make Dice
@@ -85,7 +86,10 @@ function checkSuccess(Game) {
 function checkWin(Game) {
     if (Game.success === true) {
         if (Game.round === 3) {
-            $('#gameStatus').html("YOU WIN THE GAME!!")
+            $('#gameStatus').html("YOU WIN THE GAME IN " + Game.counter + " MOVES!!");
+            Game.round = 1;
+            Game.success = false;
+            Game.counter = 0
         } else {
             Game.round += 1;
             $('#gameStatus').html("NICE!! MOVING ON TO ROUND " + Game.round)
@@ -95,9 +99,11 @@ function checkWin(Game) {
 
 // ROLL
 $('#roll').click(function () {
+    $('#gameStatus').html("ROUND: " + game.round);
     rollIt();
     checkSuccess(game);
-    checkWin(game)
+    checkWin(game);
+    game.counter += 1
 });
 
 // HOLD
