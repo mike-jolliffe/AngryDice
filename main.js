@@ -14,7 +14,10 @@ function Game() {
         if (checkAgainst[this.round]['success'].includes(currentDice)) {
             this.success = true
         } else if (checkAgainst[this.round]['fail'].includes(currentDice)) {
-            this.round = 1
+            this.round = 1;
+            $('#gameStatus').html("ANGRY DICE!! MOVING BACK TO ROUND " + this.round)
+        } else {
+            this.success = false
         }
     };
     this.checkWin = function() {
@@ -30,8 +33,8 @@ function Game() {
 }
 
 // Create a die object
-function Die(value) {
-    this.num = null;
+function Die(num, value) {
+    this.num = num;
     this.value = value;
     this.roll = function () {
         // Returns image of randomly generated number from 1-6, with 3 == angryDie
@@ -46,8 +49,8 @@ function Die(value) {
 
 // Instantiate the game and two die objects
 var game = new Game();
-var die1 = new Die($('#die1').children().attr('src'));
-var die2 = new Die($('#die2').children().attr('src'));
+var die1 = new Die(3, $('#die1').children().attr('src'));
+var die2 = new Die(3, $('#die2').children().attr('src'));
 
 function getValues() {
     var values = String(die1.num) + String(die2.num);
@@ -70,14 +73,17 @@ $('#roll').click(function () {
 
 // Click toggles die status to Hold/Held
 $('.content').first().find('button').click(function () {
-    $(this).toggleClass('held');
-    if ($(this).hasClass('held')) {
-        $(this).html("HELD");
+    if ($(this).value !== 6) {
+        $(this).toggleClass('held');
+        if ($(this).hasClass('held')) {
+            $(this).html("HELD");
+        } else {
+            $(this).html("HOLD")
+        }
     } else {
-        $(this).html("HOLD")
+        alert("You can't hold a six")
     }
+
 });
 
-// TODO figure out how to initialize a dice.num value prior to rolls
-// TODO debug the false successes that are happening with rolls in rounds 2 & 3
-// TODO Create a way to keep track of the round number, and track successes
+// TODO Disallow holding a die with value 6
