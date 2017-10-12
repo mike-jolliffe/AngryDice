@@ -1,38 +1,17 @@
+// Success and Fail rolls by round number
 var checkAgainst = {
         1: {'success': ['12', '21'], 'fail': ['33']},
         2: {'success': ['34', '43'], 'fail': ['33']},
         3: {'success': ['56', '65'], 'fail': ['33']}
     };
 
-// Create a game object
+// Create a Game to track round and successful rolls
 function Game() {
     this.round = 1;
     this.success = false;
-    this.checkSuccess = function() {
-        var currentDice = getValues();
-        console.log(currentDice);
-        if (checkAgainst[this.round]['success'].includes(currentDice)) {
-            this.success = true
-        } else if (checkAgainst[this.round]['fail'].includes(currentDice)) {
-            this.round = 1;
-            $('#gameStatus').html("ANGRY DICE!! MOVING BACK TO ROUND " + this.round)
-        } else {
-            this.success = false
-        }
-    };
-    this.checkWin = function() {
-        if (this.success == true) {
-            if (this.round === 3) {
-                $('#gameStatus').html("YOU WIN THE GAME!!")
-            } else {
-                this.round += 1;
-                $('#gameStatus').html("NICE!! MOVING ON TO ROUND " + this.round)
-            }
-        }
-    }
 }
 
-// Create a die object
+// Make Dice
 function Die(num, value) {
     this.num = num;
     this.value = value;
@@ -47,7 +26,7 @@ function Die(num, value) {
     };
 }
 
-// Instantiate the game and two die objects
+// Instantiate game and dice objects
 var game = new Game();
 var die1 = new Die(3, $('#die1').children().attr('src'));
 var die2 = new Die(3, $('#die2').children().attr('src'));
@@ -57,8 +36,7 @@ function getValues() {
     return values
 }
 
-// Display/change the value of the die object
-$('#roll').click(function () {
+function rollIt() {
     if (!($('#hold1').hasClass('held'))) {
         die1.roll();
         $('#die1').children().attr('src', die1.value);
@@ -67,23 +45,63 @@ $('#roll').click(function () {
         die2.roll();
         $('#die2').children().attr('src', die2.value);
     }
-    game.checkSuccess();
-    game.checkWin()
-});
+}
 
-// Click toggles die status to Hold/Held
-$('.content').first().find('button').click(function () {
-    if ($(this).value !== 6) {
-        $(this).toggleClass('held');
-        if ($(this).hasClass('held')) {
-            $(this).html("HELD");
+function holdIt(elem) {
+    // Get value of Die
+    if ($(elem).prev('div').attr('id') === 'die1') {
+        var value = die1.num
+    } else {
+        var value = die2.num
+    }
+    // Hold all values except 6
+    if (value !== 6) {
+       $(elem).toggleClass('held');
+        if ($(elem).hasClass('held')) {
+            $(elem).html("HELD");
         } else {
-            $(this).html("HOLD")
+            $(elem).html("HOLD")
         }
     } else {
-        alert("You can't hold a six")
+        alert("You can't hold a six!")
     }
+}
 
+// Check for roll success/failure
+function checkSuccess(Game) {
+    var currentDice = getValues();
+    console.log(currentDice);
+    if (checkAgainst[Game.round]['success'].includes(currentDice)) {
+        Game.success = true
+    } else if (checkAgainst[Game.round]['fail'].includes(currentDice)) {
+        Game.round = 1;
+        $('#gameStatus').html("ANGRY DICE!! MOVING BACK TO ROUND " + Game.round)
+    } else {
+        Game.success = false
+    }
+}
+
+// Check for round win/game win
+function checkWin(Game) {
+    if (Game.success === true) {
+        if (Game.round === 3) {
+            $('#gameStatus').html("YOU WIN THE GAME!!")
+        } else {
+            Game.round += 1;
+            $('#gameStatus').html("NICE!! MOVING ON TO ROUND " + Game.round)
+        }
+    }
+}
+
+// ROLL
+$('#roll').click(function () {
+    rollIt();
+    checkSuccess(game);
+    checkWin(game)
 });
 
-// TODO Disallow holding a die with value 6
+// HOLD
+$('.content').first().find('button').click(function () {
+    holdIt(this)
+});
+
